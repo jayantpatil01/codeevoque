@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Menu, 
   X, 
@@ -21,14 +20,18 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      // Using a threshold check to prevent unnecessary re-renders
+      const offset = window.scrollY > 20;
+      if (isScrolled !== offset) {
+        setIsScrolled(offset);
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isScrolled]);
 
   const navLinks = [
-    { name: 'Product', href: '/', icon: <Package size={16} /> },
+    { name: 'Product', href: '/product', icon: <Package size={16} /> },
     { name: 'Solutions', href: '/', icon: <Layers size={16} /> },
     { name: 'Pricing', href: '/', icon: <Tag size={16} /> },
     { name: 'Resources', href: '/', icon: <BookOpen size={16} /> },
@@ -36,22 +39,17 @@ const Navbar = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-[100] h-20 flex items-center transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-[100] h-20 flex items-center transition-colors duration-200 ${
         isScrolled 
-          ? 'bg-[#0a0a0c]/80 backdrop-blur-xl border-b border-white/10' 
+          ? 'bg-[#0a0a0c] border-b border-white/10' 
           : 'bg-transparent border-b border-transparent'
       }`}
     >
-      {/* 1. Performance Note: Added passive listener and optimized grain overlay */}
-      {isScrolled && (
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none -z-10" />
-      )}
-
       <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex items-center justify-between">
         
-        {/* 2. Logo Section: Fixed fill/sizes warning and added priority */}
+        {/* Logo Section - Removed hover scaling */}
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-          <div className="w-10 h-10 relative transition-transform duration-300 group-hover:scale-110">
+          <div className="w-10 h-10 relative">
             <Image 
               src='/E.png' 
               alt="CodeEvoque Logo" 
@@ -67,7 +65,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* 3. Desktop Navigation */}
+        {/* Desktop Navigation - Simple color transitions only */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
@@ -83,24 +81,24 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* 4. Action Buttons */}
+        {/* Action Buttons - Removed hover scale/translate */}
         <div className="hidden md:flex items-center gap-5">
           <Link 
             href="https://github.com" 
             target="_blank" 
-            className="text-slate-400 hover:text-white transition-all hover:scale-110"
+            className="text-slate-400 hover:text-white transition-colors"
           >
             <Github size={20} />
           </Link>
-          <button className="group relative px-6 py-2.5 bg-red-600 text-white font-mono text-xs font-bold rounded-sm transition-all hover:bg-red-700 active:scale-95 flex items-center gap-2 shadow-lg shadow-red-600/10">
+          <button className="px-6 py-2.5 bg-red-600 text-white font-mono text-xs font-bold rounded-sm hover:bg-red-700 transition-colors flex items-center gap-2">
             GET STARTED 
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={14} />
           </button>
         </div>
 
-        {/* 5. Mobile Toggle */}
+        {/* Mobile Toggle */}
         <button 
-          className="md:hidden text-white p-2 focus:outline-none"
+          className="md:hidden text-white p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -108,36 +106,28 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* 6. Mobile Menu Dropdown: GPU Accelerated with AnimatePresence */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="absolute top-20 left-0 right-0 md:hidden bg-[#0a0a0c] border-b border-white/10 shadow-2xl overflow-hidden"
-          >
-            <div className="flex flex-col p-8 gap-6 bg-[#0d0d0f]">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="flex items-center gap-4 text-lg font-mono text-slate-300 hover:text-red-500 uppercase tracking-tighter"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <span className="text-red-600">{link.icon}</span>
-                  {link.name}
-                </Link>
-              ))}
-              <div className="h-px w-full bg-white/5 my-2" />
-              <button className="w-full py-4 bg-red-600 text-white font-bold rounded-sm flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-xl shadow-red-600/20">
-                GET STARTED <ArrowRight size={18} />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu Dropdown - Swapped motion.div for standard div */}
+      {isMobileMenuOpen && (
+        <div className="absolute top-20 left-0 right-0 md:hidden bg-[#0d0d0f] border-b border-white/10 shadow-2xl">
+          <div className="flex flex-col p-8 gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="flex items-center gap-4 text-lg font-mono text-slate-300 hover:text-red-500 uppercase tracking-tighter"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <span className="text-red-600">{link.icon}</span>
+                {link.name}
+              </Link>
+            ))}
+            <div className="h-px w-full bg-white/5 my-2" />
+            <button className="w-full py-4 bg-red-600 text-white font-bold rounded-sm flex items-center justify-center gap-2">
+              GET STARTED <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
   Search, 
   PenTool, 
@@ -49,85 +48,70 @@ const SuccessPath = () => {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-[#0a0a0c] relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-[#0a0a0c] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Header Section */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 md:mb-24 text-center lg:text-left"
-        >
+        <div className="mb-12 md:mb-24 text-center lg:text-left">
           <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
              <span className="h-[1px] w-8 bg-red-600"></span>
-             <h2 className="text-red-600 font-mono text-xs font-bold tracking-[0.4em] uppercase">
+             <h2 className="text-red-600 font-mono text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase text-nowrap">
                 Our Simple Step-by-Step
              </h2>
           </div>
-          <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-tight">
+          <h3 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter leading-[1.1]">
             HOW WE TAKE YOU <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-400">
                 FROM IDEA TO REALITY.
             </span>
           </h3>
-        </motion.div>
+        </div>
 
         {/* Timeline Component */}
         <div className="relative">
-          {/* Horizontal Connecting Line (Visible only on Desktop) */}
+          {/* Desktop Horizontal Line - Untouched */}
           <div className="hidden lg:block absolute top-[28px] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-            {roadmap.map((item, index) => {
+          {/* Grid: 1 column on mobile, 2 on tablet, 4 on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 relative z-10">
+            {roadmap.map((item) => {
               const Icon = item.icon;
               const ValueIcon = item.valueIcon;
 
               return (
-                <motion.div 
-                  key={item.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.15 }}
-                  className="group"
-                >
-                  {/* Step Number with Pulse Effect */}
-                  <div className="mb-8 flex justify-center lg:justify-start">
-                    <div className="w-14 h-14 rounded-full bg-[#0d0d0f] border-2 border-white/10 flex items-center justify-center text-white group-hover:border-red-600 group-hover:shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-all duration-500 relative">
-                      <span className="text-lg font-black italic relative z-10">{item.id}</span>
-                      
-                      {/* Pulse Ring - GPU Optimized */}
-                      <div className="absolute inset-0 rounded-full bg-red-600/20 animate-ping opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div key={item.id} className="group flex flex-col">
+                  {/* Step Number - Adjusted for Mobile spacing */}
+                  <div className="mb-4 md:mb-8 flex justify-center lg:justify-start">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#0d0d0f] border-2 border-white/10 flex items-center justify-center text-white transition-colors duration-300 group-hover:border-red-600">
+                      <span className="text-base md:text-lg font-black italic">{item.id}</span>
                     </div>
                   </div>
 
-                  {/* Content Card */}
-                  <div className="h-full bg-white/[0.02] border border-white/5 p-8 rounded-2xl hover:bg-white/[0.05] hover:border-white/10 transition-all duration-500 flex flex-col">
-                    <div className="text-red-500 mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                      <Icon size={32} strokeWidth={1.5} />
+                  {/* Content Card - Optimized mobile padding */}
+                  <div className="h-full bg-white/[0.03] border border-white/5 p-6 md:p-8 rounded-2xl transition-colors duration-300 group-hover:bg-white/[0.05] group-hover:border-white/10 flex flex-col">
+                    <div className="text-red-500 mb-4 md:mb-6">
+                      <Icon size={28} className="md:w-8 md:h-8" strokeWidth={1.5} />
                     </div>
                     
-                    <h4 className="text-xl font-bold text-white mb-3 uppercase tracking-tight italic">
+                    <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3 uppercase tracking-tight italic">
                         {item.title}
                     </h4>
                     
-                    <p className="text-slate-400 text-sm font-light leading-relaxed mb-8 flex-grow">
+                    <p className="text-slate-400 text-sm font-light leading-relaxed mb-6 md:mb-8 flex-grow">
                       {item.desc}
                     </p>
 
                     {/* Value Badge */}
-                    <div className="pt-6 border-t border-white/5 flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-red-600/10 text-red-500">
-                        <ValueIcon size={16} />
+                    <div className="pt-4 md:pt-6 border-t border-white/5 flex items-center gap-3">
+                      <div className="p-1.5 md:p-2 rounded-lg bg-red-600/10 text-red-500">
+                        <ValueIcon size={14} className="md:w-4 md:h-4" />
                       </div>
-                      <span className="text-[10px] font-bold text-slate-200 uppercase tracking-widest">
+                      <span className="text-[9px] md:text-[10px] font-bold text-slate-200 uppercase tracking-widest">
                         {item.value}
                       </span>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>

@@ -1,16 +1,9 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Send, Mail, Phone } from 'lucide-react';
 
 const Cta = () => {
-  // Animation variants for consistency
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
   return (
     <section className="py-24 bg-[#0a0a0c] border-t border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -18,12 +11,7 @@ const Cta = () => {
           
           {/* Left Side: Sticky Content */}
           <div className="lg:w-1/2 w-full lg:sticky lg:top-32 h-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={sectionVariants}
-            >
+            <div>
               <h2 className="text-red-600 font-mono text-xs font-bold tracking-[0.4em] uppercase mb-6">
                 Contact Us
               </h2>
@@ -50,17 +38,11 @@ const Cta = () => {
                   href="tel:+917219709493"
                 />
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Right Side: Form */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="lg:w-1/2 w-full"
-          >
+          {/* Right Side: Form - Removed all motion.div */}
+          <div className="lg:w-1/2 w-full">
             <form 
               onSubmit={(e) => e.preventDefault()}
               className="bg-[#111113] border border-white/10 p-8 md:p-12 rounded-[32px] space-y-6 shadow-2xl relative z-10"
@@ -95,17 +77,17 @@ const Cta = () => {
 
               <button 
                 type="submit"
-                className="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-red-700 transition-all flex items-center justify-center gap-3 active:scale-[0.98] shadow-lg shadow-red-600/20 group"
+                className="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center gap-3 shadow-lg shadow-red-600/20 group"
               >
                 Send Message 
-                <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <Send size={18} />
               </button>
               
               <p className="text-center text-[10px] text-slate-600 uppercase tracking-tighter">
                 Secure SSL Encrypted Connection
               </p>
             </form>
-          </motion.div>
+          </div>
 
         </div>
       </div>
@@ -113,10 +95,10 @@ const Cta = () => {
   );
 };
 
-// Internal Sub-component for contact info items
+// Internal Sub-component
 const ContactInfoItem = ({ icon, label, value, href }) => (
   <a href={href} className="flex items-center gap-4 group w-fit">
-    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors duration-200">
       {icon}
     </div>
     <div>

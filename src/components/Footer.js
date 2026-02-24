@@ -29,16 +29,15 @@ const Footer = () => {
   return (
     <footer className="relative bg-[#0a0a0c] border-t border-white/5 py-12 md:py-16 overflow-hidden">
       
-      {/* 1. Optimized Background Watermark - Fixed Warning */}
+      {/* 1. Static Background Watermark - Removed transition and scale */}
       <div className="absolute -bottom-10 -left-10 opacity-[0.03] pointer-events-none select-none">
         <Image 
           src={brand.logoPath} 
           alt="Watermark" 
           width={256} 
           height={256} 
-          // maintains aspect ratio and fixes the console warning
           style={{ width: 'auto', height: 'auto' }} 
-          className="grayscale transition-transform duration-1000 group-hover:scale-110"
+          className="grayscale"
           priority={false}
         />
       </div>
@@ -51,7 +50,7 @@ const Footer = () => {
             <div className="group cursor-default">
               <span className="text-white font-black tracking-tighter uppercase text-2xl">
                 {brand.firstPart}
-                <span className="text-red-600 italic group-hover:text-red-500 transition-colors duration-300">
+                <span className="text-red-600 italic group-hover:text-red-500 transition-colors duration-200">
                   {brand.secondPart}
                 </span>
               </span>
@@ -71,7 +70,7 @@ const Footer = () => {
                   aria-label={social.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-500 hover:text-red-600 hover:-translate-y-1.5 transition-all duration-300 ease-out p-2 md:p-0"
+                  className="text-slate-500 hover:text-red-600 transition-colors duration-200 p-2 md:p-0"
                 >
                   {social.icon}
                 </a>
